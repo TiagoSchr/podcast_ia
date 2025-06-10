@@ -1,4 +1,6 @@
-# Copie este arquivo para .env e defina sua chave da API Gemini
-GEMINI_API_KEY=
-# Caminho para o modelo F5-TTS (opcional)
-F5_MODEL_PATH=
+from pathlib import Path
+
+
+def extract_text(path: str) -> str:
+    """Lê o conteúdo de um arquivo de texto."""
+    return Path(path).read_text(encoding="utf-8")
