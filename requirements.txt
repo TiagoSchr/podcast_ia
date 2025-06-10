@@ -1,12 +1,2 @@
 httpx
-async_lru
-pytesseract
-opencv-python-headless
-pypdf
-python-docx
-torch
-safetensors
-f5-tts
-streamlit
-PySimpleGUI
-transformers
+gTTS
