@@ -1,4 +1,4 @@
-# Copie este arquivo para .env e defina sua chave da API Gemini
-GEMINI_API_KEY=
-# Caminho para o modelo F5-TTS (opcional)
-F5_MODEL_PATH=
+import os
+
+GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
+GOOGLE_TTS_VOICE = os.getenv("GOOGLE_TTS_VOICE", "pt-BR-Neural2-A")

@@ -1,0 +1,8 @@
+__pycache__/
+.env
+output/
+F5-TTS-pt-br/__pycache__/
+pipeline/__pycache__/
+benchmark/
+benchmark.wav
+script.txt
