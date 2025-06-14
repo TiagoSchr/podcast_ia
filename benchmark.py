@@ -1,4 +1,4 @@
-"""Benchmark simples para medir tempo e memória da criação do podcast."""
+"""Benchmark simples da criação de podcasts."""
 
 import time
 import tracemalloc
@@ -8,15 +8,21 @@ from pipeline.workflow import create_podcast
 from pipeline.tts_simple import SimpleTTS
 
 
-class DummyLLM:
-    def generate(self, prompt: str) -> str:
-        return f"roteiro:{prompt}"
+class DummySummarizer:
+    def summarize(self, text: str) -> str:
+        return text
 
 
-def run(prompt: str = "teste"):
+def run(file_path: str = "bench.txt"):
+    Path(file_path).write_text("conteudo", encoding="utf-8")
     tracemalloc.start()
     start = time.perf_counter()
-    out = create_podcast(prompt, "benchmark.wav", llm_cls=DummyLLM, tts_cls=SimpleTTS)
+    out = create_podcast(
+        file_path,
+        "benchmark.mp3",
+        summarizer_cls=DummySummarizer,
+        tts_cls=SimpleTTS,
+    )
     elapsed = time.perf_counter() - start
     current, peak = tracemalloc.get_traced_memory()
     tracemalloc.stop()
@@ -24,9 +30,9 @@ def run(prompt: str = "teste"):
     Path("benchmark").mkdir(exist_ok=True)
     Path("benchmark/report.txt").write_text(report, encoding="utf-8")
     print(report)
+    Path(file_path).unlink()
     return out
 
 
 if __name__ == "__main__":
     run()
-

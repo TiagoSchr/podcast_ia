@@ -1,2 +1,7 @@
-httpx
+pdfplumber
+python-docx
+requests
+python-dotenv
+google-cloud-texttospeech
+google-generativeai
 gTTS

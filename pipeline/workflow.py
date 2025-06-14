@@ -1,20 +1,23 @@
 from pathlib import Path
-from .llm import LLM
-from .tts import F5TTS
+
+from .document import read_document
+from .gemini import Gemini
+from .google_tts import GoogleTTS
+from .tts_simple import SimpleTTS
 
 
 def create_podcast(
-    prompt: str,
-    output_audio: str,
-    llm_cls: type[LLM] = LLM,
-    tts_cls: type[F5TTS] = F5TTS,
+    file_path: str,
+    output_audio: str = "resumo_podcast.mp3",
+    summarizer_cls: type[Gemini] = Gemini,
+    tts_cls: type[GoogleTTS] = GoogleTTS,
 ) -> str:
-    """Gera um podcast a partir de um prompt."""
+    """Gera um podcast a partir de um documento."""
 
-    llm = llm_cls()
-    script = llm.generate(prompt)
-    text_path = Path("script.txt")
-    text_path.write_text(script, encoding="utf-8")
+    text = read_document(file_path)
+    summarizer = summarizer_cls()
+    summary = summarizer.summarize(text)
 
     tts = tts_cls()
-    return tts.synthesize(str(text_path), output_audio)
+    tts.synthesize(summary, output_audio)
+    return output_audio

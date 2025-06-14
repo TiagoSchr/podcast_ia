@@ -1,30 +1,35 @@
 import unittest
-from unittest import mock
 from pathlib import Path
 
 from pipeline.workflow import create_podcast
 
 
-class DummyLLM:
-    def generate(self, prompt: str) -> str:
-        return f"roteiro:{prompt}"
+class DummySummarizer:
+    def summarize(self, text: str) -> str:
+        return "resumo:" + text
 
 
 class DummyTTS:
-    def __init__(self):
-        self.called = False
-
-    def synthesize(self, text_file: str, output_audio: str) -> str:
-        self.called = True
-        Path(output_audio).write_text("audio")
-        return output_audio
+    def synthesize(self, text: str, output: str) -> str:
+        Path(output).write_text("audio")
+        return output
 
 
 class TestWorkflow(unittest.TestCase):
     def test_create_podcast(self):
-        out = create_podcast("tema", "out.wav", llm_cls=DummyLLM, tts_cls=DummyTTS)
-        self.assertTrue(Path(out).exists())
-        Path(out).unlink()
+        doc = Path("doc.txt")
+        doc.write_text("conteudo", encoding="utf-8")
+        try:
+            out = create_podcast(
+                str(doc),
+                "out.mp3",
+                summarizer_cls=DummySummarizer,
+                tts_cls=DummyTTS,
+            )
+            self.assertTrue(Path(out).exists())
+        finally:
+            doc.unlink()
+            Path(out).unlink()
 
 
 if __name__ == "__main__":

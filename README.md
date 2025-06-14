@@ -1,30 +1,39 @@
 # Podcast IA em Português
 
-Projeto para gerar podcasts em português de forma leve. Utiliza a API Gemini para gerar o roteiro e oferece duas opções de síntese de voz: o modelo local F5‑TTS ou a solução leve baseada em `gTTS`.
+Este projeto converte documentos (PDF, DOCX ou TXT) em podcasts de forma leve utilizando apenas APIs gratuitas.
+
+1. O texto é extraído do arquivo enviado.
+2. Um resumo em português é gerado usando a API Gemini (Google AI Studio).
+3. O resumo é convertido em áudio pelo Google Cloud Text-to-Speech (ou `gTTS` opcional).
 
 ## Requisitos
-- Python 3.12
-- Dependências do `requirements.txt`
-- Chave da API Gemini (`GEMINI_API_KEY` no `.env`)
-- (Opcional) Modelo F5‑TTS se desejar usar essa voz
+- Python 3.10+
+- Variável `GEMINI_API_KEY` configurada no ambiente ou no `.env`.
+- Para o Google TTS, configure `GOOGLE_APPLICATION_CREDENTIALS` apontando para o JSON da conta de serviço.
+- Dependências do `requirements.txt`.
 
-## Uso rápido
-1. Copie `.env.example` para `.env` e ajuste as variáveis.
-2. Instale as dependências:
-   ```bash
-   pip install -r requirements.txt
-   ```
-3. Execute o script principal passando um prompt. Escolha a engine de voz (`simple` ou `f5`):
-   ```bash
-   python main.py "tema do podcast" --output output/podcast.mp3 --tts simple
-   ```
+## Instalação
+```bash
+pip install -r requirements.txt
+```
 
-O áudio final será salvo no caminho indicado.
+Copie `.env.example` para `.env` e adicione sua chave Gemini.
 
-## Testes e benchmark
-Para rodar a suíte de testes e o benchmark básico:
+## Uso
+```bash
+python main.py arquivo.pdf --output resumo_podcast.mp3 --tts google
+```
+Você também pode usar `--tts simple` para gerar o áudio localmente com `gTTS`.
 
+O resultado será salvo no caminho indicado.
+
+## Testes
 ```bash
 python -m unittest
+```
+
+## Benchmark
+Um script `benchmark.py` mede tempo e memória de execução utilizando classes falsas.
+```bash
 python benchmark.py
 ```
